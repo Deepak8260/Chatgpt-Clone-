@@ -1,168 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Metadata section for character set, viewport settings, title, and CSS links -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ChatGpt Clone</title>
-
-    <!-- Link to external stylesheet for custom styles -->
+    <title>ChatGPT Clone</title>
     <link rel="stylesheet" href="style.css" />
-
-    <!-- Link to Font Awesome for icons -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
   </head>
-
   <body>
-    <!-- Main container that holds both left and right sections -->
     <div class="container">
-      
-      <!-- Left section for navigation and chat history -->
-      <div class="left">
-        <!-- Navigation section on the left -->
+      <aside class="left" id="sidebar">
         <div class="left-nav">
           <div class="top">
-            <!-- Icon for closing the sidebar -->
-            <div class="icon">
-              <img src="assets/sideclose.png" alt="Close Icon" />
-            </div>
-            <!-- Icon for starting a new chat -->
-            <div class="icon new-chat">
-              <img src="assets/newchat.png" alt="New Chat Icon" />
-            </div>
+            <button class="icon" id="toggleSidebar" title="Toggle sidebar">
+              <img src="assets/sideclose.png" alt="Toggle sidebar" />
+            </button>
+            <button class="icon new-chat" id="newChatBtn" title="New chat">
+              <img src="assets/newchat.png" alt="New chat" />
+            </button>
           </div>
         </div>
 
-        <!-- History section showing previous chat interactions -->
         <div class="history">
-          <!-- Fixed history items representing different categories -->
-          <div class="history-item">
+          <div class="history-item static-item">
             <img src="assets/chatgpt.png" alt="ChatGPT Icon" />
             <p>ChatGPT</p>
           </div>
-          <div class="history-item">
-            <img src="assets/explore.png" alt="Explore GPT Icon" />
-            <p>Explore GPT</p>
+          <div class="history-item static-item">
+            <img src="assets/explore.png" alt="Explore Icon" />
+            <p>Explore GPTs</p>
           </div>
 
-          <!-- History sections grouped by date (Today, Yesterday, Previous 7 Days) -->
-          <p class="today">Today</p>
-
-          <!-- Individual chat history items -->
-          <div class="history-item"><p>Search History one</p></div>
-          <div class="history-item"><p>Search History two</p></div>
-          <div class="history-item"><p>Search History three</p></div>
-          <div class="history-item"><p>Search History four</p></div>
-          <div class="history-item"><p>Search History five</p></div>
-          <div class="history-item"><p>Search History six</p></div>
-          <div class="history-item"><p>Search History seven</p></div>
-
-          <p class="today">Yesterday</p>
-          <div class="history-item"><p>Search History eight</p></div>
-          <div class="history-item"><p>Search History nine</p></div>
-          <div class="history-item"><p>Search History ten</p></div>
-          <div class="history-item"><p>Search History eleven</p></div>
-          <div class="history-item"><p>Search History twelve</p></div>
-          <div class="history-item"><p>Search History thirteen</p></div>
-
-          <!-- Repeated history items for demo purposes -->
-          <div class="history-item"><p>Search History one</p></div>
-          <div class="history-item"><p>Search History two</p></div>
-          <div class="history-item"><p>Search History three</p></div>
-          <div class="history-item"><p>Search History four</p></div>
-          <div class="history-item"><p>Search History five</p></div>
-          <div class="history-item"><p>Search History six</p></div>
-
-          <p class="today">Previous 7 Days</p>
-          <div class="history-item"><p>Search History seven</p></div>
-          <div class="history-item"><p>Search History eight</p></div>
-          <div class="history-item"><p>Search History nine</p></div>
-          <div class="history-item"><p>Search History ten</p></div>
-          <div class="history-item"><p>Search History eleven</p></div>
-          <div class="history-item"><p>Search History twelve</p></div>
-          <div class="history-item"><p>Search History thirteen</p></div>
-
-          <!-- Additional repeated history items for demo -->
-          <div class="history-item"><p>Search History one</p></div>
-          <div class="history-item"><p>Search History two</p></div>
-          <div class="history-item"><p>Search History three</p></div>
-          <div class="history-item"><p>Search History four</p></div>
-          <div class="history-item"><p>Search History five</p></div>
-          <div class="history-item"><p>Search History six</p></div>
-          <div class="history-item"><p>Search History seven</p></div>
-          <div class="history-item"><p>Search History eight</p></div>
-          <div class="history-item"><p>Search History nine</p></div>
-          <div class="history-item"><p>Search History ten</p></div>
-          <div class="history-item"><p>Search History eleven</p></div>
-          <div class="history-item"><p>Search History twelve</p></div>
-          <div class="history-item"><p>Search History thirteen</p></div>
+          <p class="today">Recent Chats</p>
+          <div id="historyList" class="history-list"></div>
         </div>
-      </div>
+      </aside>
 
-      <!-- Right section for main content and chat interface -->
-      <div class="right">
-        <!-- Navigation section on the right -->
-        <div class="right-nav">
-          <div class="nav-item">
-            <!-- Button to toggle options in ChatGPT -->
-            <button class="chatgpt-btn">
-              ChatGPT <i class="fa fa-angle-down"></i>
+      <main class="right">
+        <header class="right-nav">
+          <div class="nav-item model-picker">
+            <button class="chatgpt-btn" id="modelButton">
+              <span id="selectedModel">ChatGPT 4.1</span>
+              <i class="fa fa-angle-down"></i>
             </button>
+            <div class="model-menu" id="modelMenu">
+              <button class="model-option" data-model="ChatGPT 4.1">ChatGPT 4.1</button>
+              <button class="model-option" data-model="ChatGPT 4o-mini">ChatGPT 4o-mini</button>
+              <button class="model-option" data-model="Reasoning">Reasoning</button>
+            </div>
           </div>
-          <!-- User icon for profile or settings -->
-          <div class="nav-item user-icon">
+          <div class="nav-item user-icon" aria-label="User">
             <i class="fa fa-user"></i>
           </div>
-        </div>
+        </header>
 
-        <!-- Middle section with logo and quick action boxes -->
-        <div class="middle">
-          <!-- Logo image for ChatGPT -->
-          <div class="logo">
-            <img src="assets/chatgpt.png" alt="ChatGPT Logo" />
+        <section class="middle" id="chatSection">
+          <div class="empty-state" id="emptyState">
+            <div class="logo">
+              <img src="assets/chatgpt.png" alt="ChatGPT Logo" />
+            </div>
+            <h1>How can I help you today?</h1>
+            <div class="fourBox" id="suggestions">
+              <button class="box box1">
+                <i class="fa fa-image"></i>
+                <p>Create a cartoon illustration of my pet.</p>
+              </button>
+              <button class="box box2">
+                <i class="fa fa-graduation-cap"></i>
+                <p>Build a 2-week study plan for interview prep.</p>
+              </button>
+              <button class="box box3">
+                <i class="fa fa-lightbulb-o"></i>
+                <p>Suggest networking activities in a new city.</p>
+              </button>
+              <button class="box box4">
+                <i class="fa fa-code"></i>
+                <p>Explain recursion in simple terms with code.</p>
+              </button>
+            </div>
           </div>
-          <!-- Quick action boxes for various prompts -->
-          <div class="fourBox">
-            <div class="box box1">
-              <i class="fa fa-image"></i>
-              <p>Create a cartoon illustration of my pet</p>
-            </div>
-            <div class="box box2">
-              <i class="fa fa-graduation-cap"></i>
-              <p>Study vocabulary</p>
-            </div>
-            <div class="box box3">
-              <i class="fa fa-lightbulb-o"></i>
-              <p>Activities to make new friends in a new city</p>
-            </div>
-            <div class="box box4">
-              <i class="fa fa-image"></i>
-              <p>Create a cartoon illustration of my pet</p>
-            </div>
-          </div>
-        </div>
 
-        <!-- Bottom section with search and message input field -->
-        <div class="bottom">
-          <div class="search_container">
-            <!-- Icon for inserting media or other elements -->
-            <div class="search-icon">
-              <img src="assets/insert.png" alt="" />
-            </div>
-            <!-- Input field for user to type messages -->
+          <div id="messages" class="messages" aria-live="polite"></div>
+        </section>
+
+        <footer class="bottom">
+          <form class="search_container" id="chatForm">
+            <button type="button" class="search-icon" id="attachButton" title="Attach">
+              <img src="assets/insert.png" alt="Attach" />
+            </button>
             <div class="search-input">
-              <input type="text" placeholder="Message ChatGPT" />
+              <textarea
+                id="messageInput"
+                rows="1"
+                placeholder="Message ChatGPT"
+                aria-label="Message ChatGPT"
+              ></textarea>
             </div>
-            <!-- Icon for sending the message -->
-            <div class="send-icon">
-              <img src="assets/uparrow.png" alt="" />
-            </div>
-          </div>
-        </div>
-      </div>
+            <button type="submit" class="send-icon" id="sendButton" title="Send message">
+              <img src="assets/uparrow.png" alt="Send" />
+            </button>
+          </form>
+          <p class="footer-note">ChatGPT Clone can make mistakes. Verify important responses.</p>
+        </footer>
+      </main>
     </div>
+
+    <script src="app.js"></script>
   </body>
 </html>
